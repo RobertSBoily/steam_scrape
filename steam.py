@@ -18,6 +18,26 @@ USERNAME = 'gamelogannewell' # For example purposes only, replace with a public 
 # Tf you update this, also update it at the end of the main for loop.
 HEADER_ROW = ('URL', 'Title', 'Price', 'Discount %', 'Original Price', 'Early Access?')
 
+
+class SteamScraper:
+	def init(self, username):
+		self.url = URL_1 + username + URL_2
+
+		# Set up spreadhsheet
+		self.wb = Workbook()
+		self.ws = self.wb.active
+		self.ws.title = 'Steam Followed'
+		self.ws.append(HEADER_ROW)
+
+		# Set up webdriver
+		self.driver = webdriver.Firefox()
+		self.driver.maximize_window()
+		self.driver.get(self.url)
+
+		
+
+
+
 full_url = URL_1 + USERNAME + URL_2
 print(full_url)
 

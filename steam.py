@@ -13,7 +13,7 @@ SLEEP = 5
 # URL Config
 URL_1 = 'https://steamcommunity.com/id/'
 URL_2 = '/followedgames'
-USERNAME = 'GabeN'
+USERNAME = 'gamelogannewell' # For example purposes only, replace with a public profile.
 
 # Tf you update this, also update it at the end of the main for loop.
 HEADER_ROW = ('URL', 'Title', 'Price', 'Discount %', 'Original Price', 'Early Access?')

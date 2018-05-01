@@ -13,7 +13,7 @@ SLEEP = 5
 # URL Config
 URL_1 = 'https://steamcommunity.com/id/'
 URL_2 = '/followedgames'
-USERNAME = 'gamelogannewell' # For example purposes only, replace with a public profile.
+USERNAME = 'gabelogannewell' # For example purposes only, replace with a public profile.
 
 # Tf you update this, also update it at the end of the main for loop.
 HEADER_ROW = ('URL', 'Title', 'Price', 'Discount %', 'Original Price', 'Early Access?')
@@ -36,7 +36,7 @@ class SteamScraper:
 
 	def get_early_access(self):
 		try:
-			driver.find_element_by_class_name('early_access_header')
+			self.driver.find_element_by_class_name('early_access_header')
 		except NoSuchElementException:
 			return False
 		else:
@@ -55,16 +55,16 @@ class SteamScraper:
 			# Try the procedure for "item on sale".
 			try:
 				# Remember, all of these are strings, not ints, eg 'CDN$ 16.99' or '-80%'
-				price = driver.find_element_by_class_name('discount_final_price').text
-				discount_percent = driver.find_element_by_class_name('discount_pct').text
-				original_price = driver.find_element_by_class_name('discount_original_price').text
+				price = self.driver.find_element_by_class_name('discount_final_price').text
+				discount_percent = self.driver.find_element_by_class_name('discount_pct').text
+				original_price = self.driver.find_element_by_class_name('discount_original_price').text
 				print('Item is on discount.')
 				print(price + discount_percent + original_price)
 				return(price, discount_percent, original_price)
 			except NoSuchElementException:
 				print('Item is not on discount...')
 				try:
-					coming_soon = driver.find_element_by_css_selector('.game_area_comingsoon.game_area_bubble')
+					coming_soon = self.driver.find_element_by_css_selector('.game_area_comingsoon.game_area_bubble')
 					price = coming_soon.find_element_by_tag_name('h1').text
 					print('Item has no price set.')
 					return (price, None, None)
@@ -86,7 +86,7 @@ class SteamScraper:
 			print("Bypassing agecheck type A...")
 			# Move forward, then reset url_components for later steps.
 			self.driver.find_element_by_link_text('View Page').click()
-			self.url_components = driver.current_url.split(sep='/')
+			self.url_components = self.driver.current_url.split(sep='/')
 
 		elif self.url_components[3] == 'agecheck':
 			print("Bypassing agecheck type B...")
@@ -94,7 +94,7 @@ class SteamScraper:
 			year_dropdown = Select(self.driver.find_element_by_id('ageYear'))
 			year_dropdown.select_by_value("1987")
 			self.driver.find_element_by_link_text('Enter').click()
-			self.url_components = driver.current_url.split(sep='/')
+			self.url_components = self.driver.current_url.split(sep='/')
 
 		# Sufficient, but not necessary condition, for the presence of an agecheck that this code doesn't handle.
 		elif 'agecheck' in self.url_components:
@@ -105,7 +105,7 @@ class SteamScraper:
 		"""Must be run before calling self.game_urls"""
 		# Should this be in __init__()? I don't like the idea of running a webdriver in __init__()
 		self.driver.get(self.url)
-		self.games = driver.find_elements_by_link_text('Visit the Store Page')
+		self.games = self.driver.find_elements_by_link_text('Visit the Store Page')
 		self.game_urls = [] # Should this be created in __init__() ?
 
 		for game in self.games:
@@ -136,7 +136,7 @@ class SteamScraper:
 			early_access = self.get_early_access()
 
 			# Diagnostics
-			print('url_components == ' + str(url_components)) # url_components is an array.
+			print('url_components == ' + str(self.url_components)) # url_components is an array.
 			print('app_id == ' + app_id)
 			print('title == ' + title)
 			print('price == ' + price)
@@ -150,6 +150,7 @@ class SteamScraper:
 
 		# Save data
 		self.wb.save('steam.xlsx')
+		self.driver.quit()
 		
 
 		

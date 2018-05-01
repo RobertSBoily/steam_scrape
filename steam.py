@@ -20,10 +20,10 @@ HEADER_ROW = ('URL', 'Title', 'Price', 'Discount %', 'Original Price', 'Early Ac
 
 
 class SteamScraper:
-	def init(self, username):
+	def __init__(self, username):
 		self.url = URL_1 + username + URL_2
 
-		# Set up spreadhsheet
+		# Set up spreadshheet
 		self.wb = Workbook()
 		self.ws = self.wb.active
 		self.ws.title = 'Steam Followed'
@@ -32,7 +32,15 @@ class SteamScraper:
 		# Set up webdriver
 		self.driver = webdriver.Firefox()
 		self.driver.maximize_window()
+
+
+	def get_game_urls(self):
 		self.driver.get(self.url)
+		self.games = driver.find_elements_by_link_text('Visit the Store Page')
+		self.game_urls = [] # Should this be created in __init__() ?
+
+		for game in self.games:
+			self.game_urls.append(game.get_attribute('href'))
 
 		
 
@@ -45,7 +53,7 @@ print(full_url)
 data_book = Workbook()
 followed_sheet = data_book.active
 followed_sheet.title = 'Steam Followed'
-# Create header row; 
+# Create header row 
 followed_sheet.append(HEADER_ROW)
 
 # Firefox Execution

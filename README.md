@@ -1,4 +1,17 @@
-# steam_scrape
+# steam_scraper
+This is a Python script to:
+- Open the "Followed Games" page of a Steam profile, with the username as user input
+- Webscrape, from Steam, various information on each game.
+- Export that information to a spreadsheet (steam.xlsx).
+
+Usage:
+```
+import steam
+scraper = Steam.SteamScraper("YOUR_STEAM_USERNAME_HERE")
+scraper.main()
+```
+
+
 Style and structure problems existing in this code (TO FIX):
 - SteamScraper is a god object (this relic of this code originally being procedural).
 - Related to the above: use Page Object Design.

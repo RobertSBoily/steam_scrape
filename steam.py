@@ -85,7 +85,9 @@ class SteamScraper:
 		if self.url_components[-1] == 'agecheck': # For format "http://store.steampowered.com/app/691690/agecheck"
 			print("Bypassing agecheck type A...")
 			# Move forward, then reset url_components for later steps.
+			print()
 			self.driver.find_element_by_link_text('View Page').click()
+			time.sleep(5)
 			self.url_components = self.driver.current_url.split(sep='/')
 
 		elif self.url_components[3] == 'agecheck':
